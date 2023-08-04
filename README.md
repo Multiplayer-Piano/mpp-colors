@@ -6,4 +6,4 @@ Colors are sorted in this order:
 2. Brightness (darkest first, lightest last)
 3. Hue (magenta's first, purple's last)
 
-![Preview](https://github.com/TheAlienDrew/mpp-colors/blob/main/img/readme/preview.png)
+![Preview](https://github.com/Multiplayer-Piano/mpp-colors/blob/main/img/readme/preview.png)
