@@ -1,5 +1,5 @@
 # mpp-colors
-Just a website that shows all the colors available on Multiplayer Piano (https://multiplayerpiano.com), in an orderly fashion.
+Just a website that shows all the colors available on Multiplayer Piano (https://www.multiplayerpiano.org), in an orderly fashion.
 
 Colors are sorted in this order:
 1. Saturation (highest first, lowest last)
