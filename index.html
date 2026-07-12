@@ -44,6 +44,54 @@
         <div id="colors"></div>
         <h1 id="homepage"><a href="https://github.com/Multiplayer-Piano/">https://github.com/Multiplayer-Piano/</a></h1>
         <script>
+            function getScriptContentsSync(url) {
+                try {
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.open('GET', url, false); 
+                    xhr.send();
+
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        console.log(xhr.responseText);
+                        return xhr.responseText;
+                    } else {
+                        console.error(`HTTP error! Status: ${xhr.status}`);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch script:", error);
+                }
+            }
+
+            let scriptJS = getScriptContentsSync('https://multiplayerpiano.net/script.js');
+
+            const matchKnownColorMap = scriptJS.match(
+                /([A-Za-z_$][\w$]*)\.addToMap\("#FAFAD2","Light goldenrod yellow"\)/
+            );
+
+            if (!matchKnownColorMap) {
+                throw new Error("Couldn't find Color class");
+            }
+
+            const foundColorClass = matchKnownColorMap[1];
+
+            const regexColorMappings = new RegExp(
+                foundColorClass.replace(/\$/g, "\\$") +
+                String.raw`\.addToMap\("#[0-9A-F]{6}","[^"]+"\)`,
+                "g"
+            );
+
+            const matchesColorMappings = [...scriptJS.matchAll(regexColorMappings)];
+            const lastColorMap = matchesColorMappings.at(-1);
+
+            const patchedJS = scriptJS.replace(
+                lastColorMap[0],
+                `${lastColorMap[0]};window.Color=${foundColorClass};`
+            );
+
+            const patchedScript = document.createElement("script");
+            patchedScript.textContent = patchedJS;
+            document.head.appendChild(patchedScript);
+
             const COLORS_ID = "colors";
             const COLOR_CLASS = "color";
             var htmlContents = "";
